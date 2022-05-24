@@ -25,6 +25,7 @@ fn arParamLoad(filename: String, num: i32) {
     let mut dist_function_version: usize = 0;
     let flen: usize;
     let mut i: usize = 0;
+    let mut dst: [u8; 176] = [0; 176];
     if num < 1 {
         ret = -1;
     }
@@ -32,11 +33,11 @@ fn arParamLoad(filename: String, num: i32) {
     flen = info.len();
     println!("{}", flen);
     println!("{:?}", info);
+    let ar_param_vi = arParamVersionInfo_t {
+        dist_factor_num: 0,
+        ARParam_size: 0,
+    };
     while i < AR_DIST_FUNCTION_VERSION_MAX {
-        let ar_param_vi = arParamVersionInfo_t {
-            dist_factor_num: 0,
-            ARParam_size: 0,
-        };
         if flen as u8 % ar_param_vi.arParamVersionInfo(i)[1] == 0 {
             dist_function_version = i + 1;
             break;
@@ -52,6 +53,9 @@ fn arParamLoad(filename: String, num: i32) {
         "Reading camera parameters from buffer (distortion function version {}).\n",
         dist_function_version
     );
+    let slice = ar_param_vi.arParamVersionInfo(dist_function_version - 1)[1];
+    println!("slice is: {}", slice);
+    dst.copy_from_slice(&info[slice as usize..]);
 }
 
 fn main() {
