@@ -1,10 +1,19 @@
 use std::fs;
 
 const AR_DIST_FUNCTION_VERSION_MAX: usize = 4;
+const AR_DIST_FACTOR_NUM_MAX: usize = 9;
 
 struct arParamVersionInfo_t {
     dist_factor_num: usize,
     ARParam_size: usize,
+}
+
+struct ARParamd {
+    xsize: i32,
+    ysize: i32,
+    mat: [[f64; 3];  4],
+    dist_factor: [f64; AR_DIST_FACTOR_NUM_MAX],
+    dist_function_version: i32,
 }
 
 impl arParamVersionInfo_t {
@@ -18,7 +27,6 @@ impl arParamVersionInfo_t {
         array[index]
     }
 }
-//const arParamVersionInfo_t arParamVersionInfo[AR_DIST_FUNCTION_VERSION_MAX];
 
 fn arParamLoad(filename: String, num: i32) {
     let mut ret: i8 = 0;
